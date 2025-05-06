@@ -72,10 +72,55 @@ const displayMovemets = function (movements) {
                 <div class="movements__value">${mov}</div>
               </div>`;
     containerMovements.insertAdjacentHTML("afterbegin", element);
-    console.log(element);
+    //console.log(element);
   });
 };
 displayMovemets(account1.movements);
+
+//displaying Balance Amount
+const displaybalanceamount = function (movements) {
+  const balance = movements.reduce(function (acc, mov, i, arr) {
+    return acc + mov;
+  }, 0);
+  labelBalance.textContent = `${balance} EUR`;
+};
+displaybalanceamount(account1.movements);
+
+console.log(containerMovements.innerHTML);
+
+const creatUserNAmes = function (accounts) {
+  accounts.forEach(function (acc) {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(" ")
+      .map((name) => name[0])
+      .join("");
+  });
+};
+creatUserNAmes(accounts);
+console.log(accounts);
+
+//Dispalying In, Out,Interset
+const displayAmounts = function (movements) {
+  const deposit = movements
+    .filter((mov) => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  console.log(deposit);
+  labelSumIn.textContent = `${deposit}💶`;
+
+  const withdraw = movements
+    .filter((mov) => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${Math.abs(withdraw)}💶`;
+
+  const Interset = movements
+    .filter((mov) => mov > 0)
+    .map((deposit) => (deposit * 1.2) / 100)
+    .filter((mov) => mov >= 1)
+    .reduce((deposit, mov) => deposit + mov, 0);
+  labelSumInterest.textContent = `${Interset}💶`;
+};
+displayAmounts(account1.movements);
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -86,7 +131,56 @@ displayMovemets(account1.movements);
   ["EUR", "Euro"],
   ["GBP", "Pound sterling"],
 ]);
+*/
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];*/
+//Map, Filter, REduce
+const a = 1.1;
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// const movementsUSD = movements.map(function (mov) {
+//   return mov * 1.1;
+// });
+const movementsUSD = movements.map((mov) => mov * 1.1);
+console.log(movementsUSD);
 
+const movementsUSDfor = [];
+movements.forEach((mov) => {
+  movementsUSDfor.push(mov * a);
+});
+console.log(movementsUSDfor);
 /////////////////////////////////////////////////
+
+//Challenge 1
+const julia1 = [3, 5, 2, 12, 7];
+const julia2 = [9, 16, 6, 8, 3];
+const kate1 = [4, 1, 15, 8, 3];
+const kate2 = [10, 5, 6, 1, 4];
+const checkDogs = function (dogsjulia, dogskate) {
+  const arr1 = [...dogsjulia];
+  arr1.splice(0, 1);
+  arr1.splice(-2);
+  const arr2 = [...dogskate];
+  //   arr2.splice(0, 1);
+  //   arr2.splice(-2);
+  const combined = [...arr1, ...arr2];
+  combined.forEach(function (ele, i) {
+    const type = ele > 3 ? "adult" : "puppy";
+    console.log(`Dog Number ${i + 1} is an ${type} and is ${ele} Years old`);
+  });
+  //console.log(arr1, arr2);
+};
+checkDogs(julia1, kate1);
+checkDogs(julia2, kate2);
+
+const b = movements.filter(function (mov) {
+  return mov > 0;
+});
+console.log(b);
+
+const c = [];
+for (const mov of movements) {
+  if (mov > 0) c.push(mov);
+}
+console.log(c);
+
+const withdrawls = movements.filter((mov) => mov < 0);
+console.log(withdrawls);
