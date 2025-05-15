@@ -61,18 +61,6 @@ const inputLoanAmount = document.querySelector(".form__input--loan-amount");
 const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
-const UpdateUI = function (currentAccount) {
-  //Display Balance
-  displaybalanceamount(currentAccount);
-
-  //Display Summaey
-  displaySummarySection(currentAccount);
-
-  //Display Movements
-  displayMovemets(currentAccount.movements, false);
-};
-
-let currentAccount;
 const displayMovemets = function (movements, sort = false) {
   containerMovements.innerHTML = "";
   const copymovements = sort
@@ -98,7 +86,7 @@ const displaybalanceamount = function (acc) {
   acc.balance = acc.movements.reduce(function (acc, mov, i, arr) {
     return acc + mov;
   }, 0);
-  labelBalance.textContent = `${acc.balance} EUR`;
+  labelBalance.textContent = `${Math.floor(acc.balance)} EUR`;
 };
 //displaybalanceamount(account1.movements);
 
@@ -131,9 +119,27 @@ const displaySummarySection = function (acc) {
     .map((deposit) => (deposit * acc.interestRate) / 100)
     .filter((mov) => mov >= 1)
     .reduce((deposit, mov) => deposit + mov, 0);
-  labelSumInterest.textContent = `${Interset}💶`;
+  labelSumInterest.textContent = `${Math.floor(Interset)}💶`;
 };
 //displaySummarySection(account1.movements);
+
+const UpdateUI = function (currentAccount) {
+  //Display Balance
+  displaybalanceamount(currentAccount);
+
+  //Display Summaey
+  displaySummarySection(currentAccount);
+
+  //Display Movements
+  displayMovemets(currentAccount.movements, false);
+};
+
+let currentAccount;
+
+//Fake Always Logged in
+currentAccount = account1;
+UpdateUI(currentAccount);
+containerApp.style.opacity = 100;
 
 //Implementing Login Logic
 btnLogin.addEventListener("click", function (e) {
